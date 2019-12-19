@@ -17,28 +17,38 @@
   var p1deck = [];
   var p2deck = [];
 
-  alert(modeDetector);
 
-  function doThings(){
+  function doThings( number ){
 
+    // I made the doNothing function and the doSomething function inside of this just to make it easier to understand at this point
+    //as we add more subfunctions inside of other functions (player1.playcard() etc.) then we will implement them here.
     this.doNothing = function(){
-      alert("Hello! doNothing function has been called! (Weirdly enough). ModeDetector value is " + modeDetector);
+      console.log("Hello doNothing function has been called! ModeDetector value is " + modeDetector);
     }
     this.doSomething = function(){
-      alert("Hello! doSomething function has been called! ModeDetector value is " + modeDetector);
+      console.log("Hello! doSomething function has been called! ModeDetector value is " + modeDetector);
     }
-    if(modeDetector = 0){
+    this.gameOver = function( winner ){
+      console.log("Congratulations to " + winner + " for completely destroying their opponent!");
+    }
+
+
+    if(modeDetector == 0){
       this.doNothing();
-    } else if(modeDetector = 1){
+    } else if(modeDetector == 1){
       this.doSomething();
+    } else if (modeDetector == 2){
+      this.gameOver( );
     }
 
   }
 
   function start(){
-    doThings();
+    progress();
+    console.log("md is now " + modeDetector);
   }
 
+  setInterval(doThings , 33);
 
   function progress(){
     modeDetector = modeDetector + 1;
@@ -53,11 +63,19 @@
   }
 
   function player1( deck , health ){
+    this.lost = 0;
 
+    if(health == 0){
+
+    }
   }
 
   function player2( deck , health ){
+    this.winner = 0;
 
+    if( health == 0){
+
+    }
   }
 
   function maunu( health , attack , special ){
