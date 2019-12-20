@@ -1,10 +1,6 @@
 <body style="padding:0px;margin:0px" id="body">
 
-
-
 <button type="button" onclick="start()"> PRESS TO START</button>
-
-
 
 <canvas width=650 height= 900 id="canvas" style="border:5px solid red; margin:0px; display: none">
 
@@ -13,12 +9,15 @@
 
 <script>
 
+  var canvas = document.getElementById("canvas");
+  var context = canvas.getContext("2d");
   var modeDetector = 0;
   var p1deck = [];
   var p2deck = [];
+  var testCard = new trogdor( 10 , 10 , 10 , 10 , 10 , 10 , 10 );
 
 
-  function doThings( number ){
+  function doThings( ){
 
     // I made the doNothing function and the doSomething function inside of this just to make it easier to understand at this point
     //as we add more subfunctions inside of other functions (player1.playcard() etc.) then we will implement them here.
@@ -27,6 +26,7 @@
     }
     this.doSomething = function(){
       console.log("Hello! doSomething function has been called! ModeDetector value is " + modeDetector);
+      testCard.draw();
     }
     this.gameOver = function( winner ){
       console.log("Congratulations to " + winner + " for completely destroying their opponent!");
@@ -78,18 +78,26 @@
     }
   }
 
-  function maunu( health , attack , special ){
-
+  function maunu( health , attack , special , position ){
+    this.sprite = new Image();
 
     this.display = "stuff and things";
 
   }
-  function trogdor( health , attack , special ){
+  function trogdor( x , y , health , attack , special , position ){
+    this.sprite = new Image();
+    this.sprite.src = "trogdor3.jpg";
+    this.position = position;
+    this.x = x;
+    this.y = y;
 
-    this.display = "stuff and burnt things";
+    this.draw = function(){
+      context.drawImage( this.sprite, this.x, this.y, 180 , 240 );
+    }
 
   }
-  function badgers( health , attack , special ){
+  function badgers( health , attack , special , position ){
+    this.sprite = new Image();
 
     this.display = "stuff and snake things";
 
