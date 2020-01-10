@@ -2,7 +2,7 @@
 
 <button type="button" onclick="start()"> PRESS TO START</button>
 
-<canvas width=650 height= 900 id="canvas" style="border:5px solid red; margin:0px; display: none">
+<canvas width= 1280 height= 720 id="canvas" style="border:5px solid red; margin:0px; display: none">
 
 </canvas>
 
@@ -14,19 +14,38 @@
   var modeDetector = 0;
   var p1deck = [];
   var p2deck = [];
-  var testCard = new trogdor( 10 , 10 , 10 , 10 , 10 , 10 , 10 );
+  var p1activeCards = [];
+  var p2activeCards = [];
+  var p1deadCards = [];
+  var p2deadcards = [];
+  p1deck.push(new card( 1 ));
+  var testCard2;
+  var testCard3;
+  var positionDetectorplayer1 = 1;
+  var positionDetectorplayer2 = 1;
+  // these variables are meant to determine where (in terms of order) to put each card. I will try and implement a system
+  //in which the position value of each card in p1deck and p2deck will hopefully display the x
+  //and y value in ratios of like n*(width of card + 10 pixels) and keeping the same X
+  // im just spewing out random ideas at this point
 
+  //UPDATE: Good y value is
+  function doThings(){
 
-  function doThings( ){
+    canvas.style.display = "block";
 
     // I made the doNothing function and the doSomething function inside of this just to make it easier to understand at this point
     //as we add more subfunctions inside of other functions (player1.playcard() etc.) then we will implement them here.
     this.doNothing = function(){
-      console.log("Hello doNothing function has been called! ModeDetector value is " + modeDetector);
+      clearBackground();
     }
     this.doSomething = function(){
-      console.log("Hello! doSomething function has been called! ModeDetector value is " + modeDetector);
-      testCard.draw();
+      clearBackground();
+      for(var pos = 0; pos < p1deck.length; pos++){
+        p1deck[pos].draw();
+      }
+      for(var pos = 0; pos < p1activeCards.length; pos++){
+        p1activeCards[pos].draw();
+      }
     }
     this.gameOver = function( winner ){
       console.log("Congratulations to " + winner + " for completely destroying their opponent!");
@@ -40,8 +59,12 @@
     } else if (modeDetector == 2){
       this.gameOver( );
     }
-
   }
+
+  function clearBackground(){
+  context.fillStyle = "black";
+  context.fillRect(0,0, canvas.width, canvas.height);
+}
 
   function start(){
     progress();
@@ -58,12 +81,8 @@
     modeDetector = modeDetector -1;
   }
 
-  function cardDealer( number ){
-
-  }
-
   function player1( deck , health ){
-    this.lost = 0;
+    this.winStatus = 0;
 
     if(health == 0){
 
@@ -71,36 +90,78 @@
   }
 
   function player2( deck , health ){
-    this.winner = 0;
+    this.winStatus = 0;
 
     if( health == 0){
 
     }
   }
 
-  function maunu( health , attack , special , position ){
-    this.sprite = new Image();
+  function card ( type ){
 
-    this.display = "stuff and things";
+    this.type = type;
+
+
+    this.maunu = function(){
+    }
+
+
+      this.trogdor = function(){
+        this.sprite = new Image();
+        this.sprite.src = "trogdor3.jpg";
+        this.status = 0;
+        this.x = 50;
+        this.y = 50;
+        this.owner;
+
+      this.draw = function(){
+        context.drawImage( this.sprite, this.x, this.y, 180 , 240 );
+      }
+    }
+
+
+    this.badgers = function(){
+
+    }
+    //FOR ALL DRAW FUNCTIONS DO NOT CHANGE THE LAST TWO VALUES, THESE ARE THE ACTUAL RESOLUTIONS
+    //IF YOU NEED TO CHANGE IT PLEASE KEEP THE RATIO OF 6 by 8
 
   }
-  function trogdor( x , y , health , attack , special , position ){
+
+  /*function maunu( health , attack , special , position ){
+    this.sprite = new Image();
+
+  }
+  function trogdor( ){
     this.sprite = new Image();
     this.sprite.src = "trogdor3.jpg";
-    this.position = position;
-    this.x = x;
-    this.y = y;
+    this.status = 0;
+    this.x = 50;
+    this.y = 50;
+    this.owner;
+
+    //status detector will make 0 be not in battle, 1 in battle, and 2 for dead/in discard pile
 
     this.draw = function(){
       context.drawImage( this.sprite, this.x, this.y, 180 , 240 );
     }
-
   }
+
   function badgers( health , attack , special , position ){
     this.sprite = new Image();
 
     this.display = "stuff and snake things";
 
-  }
+    this.handler = function(){
+      if( type == 1){
+        //run maunu things
+      } else if (type == 2){
+        this.trogdor.draw();
+      } else if (type == 3){
+        //run badgers things
+      }
+    }
 
+  }
+*/
   </script>
