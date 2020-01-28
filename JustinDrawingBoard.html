@@ -2,7 +2,7 @@
 
 <button type="button" onclick="start()"> PRESS TO START</button>
 
-<canvas width= 1280 height= 720 id="canvas" style="border:5px solid red; margin:0px; display: ">
+<canvas width= 1280 height= 720 id="canvas" style="border:5px solid red; margin:0px; display: block ">
 
 </canvas>
 
@@ -18,7 +18,7 @@
   var p2activeCards = [];
   var p1deadCards = [];
   var p2deadcards = [];
-  p1deck.push(new card( 1 ));
+  var testCard = new card( 1 );
   var testCard2;
   var testCard3;
   var positionDetectorplayer1 = 1;
@@ -28,42 +28,57 @@
   //and y value in ratios of like n*(width of card + 10 pixels) and keeping the same X
   // im just spewing out random ideas at this point
 
-  //UPDATE: Good y value is
+  //card types -> 1 = Maunu, 2 = Badgers, 3 = Trogdor
+
+  //UPDATE: Good y value
   function doThings(){
 
-    canvas.style.display = "block";
 
     // I made the doNothing function and the doSomething function inside of this just to make it easier to understand at this point
     //as we add more subfunctions inside of other functions (player1.playcard() etc.) then we will implement them here.
-    this.doNothing = function(){
-      clearBackground();
-    }
-    this.doSomething = function(){
-      clearBackground();
-      for(var pos = 0; pos < p1deck.length; pos++){
-        p1deck[pos].draw();
-      }
-      for(var pos = 0; pos < p1activeCards.length; pos++){
-        p1activeCards[pos].draw();
-      }
-    }
-    this.gameOver = function( winner ){
-      console.log("Congratulations to " + winner + " for completely destroying their opponent!");
-    }
+  //  this.doNothing = function(){
+
 
 
     if(modeDetector == 0){
-      this.doNothing();
+      clearBackground();
+      showStartupScreen();
     } else if(modeDetector == 1){
-      this.doSomething();
+      normalGameMode();
     } else if (modeDetector == 2){
-      this.gameOver( );
+      gameOver( );
     }
   }
 
   function clearBackground(){
   context.fillStyle = "gray";
   context.fillRect(0,0, canvas.width, canvas.height);
+}
+
+function gameOver() {
+    console.log("Congratulations to " + winner + " for completely destroying their opponent!");
+}
+
+function showStartupScreen() {
+
+}
+
+function normalGameMode() {
+  clearBackground();
+  for(var pos = 0; pos < p1deck.length; pos++){
+    p1deck[pos].handler();
+  }
+  for(var pos = 0; pos < p1activeCards.length; pos++){
+    p1activeCards[pos].handler();
+  }
+  for(var pos = 0; pos < p2deck.length; pos ++){
+    p2deck[pos].handler();
+  }
+  for(var pos = 0; pos < p2activeCards.length; pos++){
+    p2activeCards[pos].handler();
+  }
+  //throwing out ideas once more
+  testCard.handler();
 }
 
   function start(){
@@ -100,31 +115,63 @@
   function card ( type ){
 
     this.type = type;
+    this.trogdorSprite = new Image();
+    this.trogdorSprite.src = "trogdor3.jpg";
+    this.maunuSprite = new Image();
+    this.badgersSprite = new Image();
+    this.badgerSprite.src = "badgers.jpg";
+    this.currentSprite;
+    this.x;
+    this.y;
+    this.status;
+    this.owner;
 
+    this.handler = function(){
+      if( type == 1){
+
+        this.maunu();
+      } else if (type == 2){
+
+        this.trogdor();
+      } else if (type == 3){
+        this.badgers();
+      }
+    }
+
+    this.draw = function(){
+      context.drawImage( this.currentSprite, this.x, this.y, 180 , 240 );
+    }
 
     this.maunu = function(){
+      this.currentSprite = this.maunuSprite;
     }
 
 
       this.trogdor = function(){
-        this.sprite = new Image();
-        this.sprite.src = "trogdor3.jpg";
+
+        this.currentSprite = this.trogdorSprite;
         this.status = 0;
         this.x = 50;
         this.y = 50;
         this.owner;
+        this.draw();
 
-      this.draw = function(){
-        context.drawImage( this.sprite, this.x, this.y, 180 , 240 );
-      }
+
     }
 
 
     this.badgers = function(){
 
+
+      this.status = 0;
+      this.x = 50;
+      this.y = 50;
+      this.owner;
+
+      this.draw();
     }
     //FOR ALL DRAW FUNCTIONS DO NOT CHANGE THE LAST TWO VALUES, THESE ARE THE ACTUAL RESOLUTIONS
-    //IF YOU NEED TO CHANGE IT PLEASE KEEP THE RATIO OF 6 by 8
+    //IF YOU NEED TO CHANGE IT PLEASE KEEP THE RATIO OF 6(X) by 8(Y)
 
   }
 
