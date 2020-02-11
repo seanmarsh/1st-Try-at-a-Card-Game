@@ -13,16 +13,23 @@
   var context = canvas.getContext("2d");
   var modeDetector = 0;
   var p1deck = [];
-  var p2deck = [];
+  //var p2deck = [];
   var p1activeCards = [];
-  var p2activeCards = [];
+  //var p2activeCards = [];
   var p1deadCards = [];
-  var p2deadcards = [];
-  var testCard = new card( 1 );
+  //var p2deadcards = [];
+  
+  p1deck.push (new card(2));
+  p1deck.push (new card(2));
+  
+  var testCard = new card(1);
+  
   var testCard2;
   var testCard3;
-  var positionDetectorplayer1 = 1;
-  var positionDetectorplayer2 = 1;
+  /*var positionDetectorplayer1 = 1;
+  var positionDetectorplayer2 = 1;*/
+  
+  
   // these variables are meant to determine where (in terms of order) to put each card. I will try and implement a system
   //in which the position value of each card in p1deck and p2deck will hopefully display the x
   //and y value in ratios of like n*(width of card + 10 pixels) and keeping the same X
@@ -31,14 +38,43 @@
   //card types -> 1 = Maunu, 2 = Badgers, 3 = Trogdor
 
   //UPDATE: Good y value
+  
+  
+    function start(){
+    progress();
+    console.log("md is now " + modeDetector);
+  }
+  
+  
+	function gameOver() {
+    console.log("Congratulations to " + winner + " for completely destroying their opponent!");
+}
+
+	function showStartupScreen() {
+
+}
+
+
+	function progress(){
+    modeDetector = modeDetector + 1;
+  }
+
+	function regress(){
+    modeDetector = modeDetector -1;
+  }
+  
+  
+
+	function clearBackground(){
+  context.fillStyle = "gray";
+  context.fillRect(0,0, canvas.width, canvas.height);
+}
+
+  
+  
+  
+  
   function doThings(){
-
-
-    // I made the doNothing function and the doSomething function inside of this just to make it easier to understand at this point
-    //as we add more subfunctions inside of other functions (player1.playcard() etc.) then we will implement them here.
-  //  this.doNothing = function(){
-
-
 
     if(modeDetector == 0){
       clearBackground();
@@ -46,55 +82,39 @@
     } else if(modeDetector == 1){
       normalGameMode();
     } else if (modeDetector == 2){
-      gameOver( );
+      gameOver();
     }
   }
-
-  function clearBackground(){
-  context.fillStyle = "gray";
-  context.fillRect(0,0, canvas.width, canvas.height);
-}
-
-function gameOver() {
-    console.log("Congratulations to " + winner + " for completely destroying their opponent!");
-}
-
-function showStartupScreen() {
-
-}
-
-function normalGameMode() {
+ 
+	setInterval(doThings , 33);
+  
+  
+  function normalGameMode() {
   clearBackground();
   for(var pos = 0; pos < p1deck.length; pos++){
-    p1deck[pos].handler();
+    p1deck[pos].typeHandler();
   }
-  for(var pos = 0; pos < p1activeCards.length; pos++){
-    p1activeCards[pos].handler();
-  }
+ /* for(var pos = 0; pos < p1activeCards.length; pos++){
+    p1activeCards[pos].typeHandler();
+  } */
+
+  /*
   for(var pos = 0; pos < p2deck.length; pos ++){
-    p2deck[pos].handler();
+    p2deck[pos].typeHandler();
   }
   for(var pos = 0; pos < p2activeCards.length; pos++){
-    p2activeCards[pos].handler();
+    p2activeCards[pos].typeHandler();
   }
   //throwing out ideas once more
-  testCard.handler();
+  testCard.typeHandler();
+  */
 }
 
-  function start(){
-    progress();
-    console.log("md is now " + modeDetector);
-  }
 
-  setInterval(doThings , 33);
 
-  function progress(){
-    modeDetector = modeDetector + 1;
-  }
 
-  function regress(){
-    modeDetector = modeDetector -1;
-  }
+
+
 
   function player1( deck , health ){
     this.winStatus = 0;
@@ -103,7 +123,7 @@ function normalGameMode() {
 
     }
   }
-
+  
   function player2( deck , health ){
     this.winStatus = 0;
 
@@ -112,38 +132,62 @@ function normalGameMode() {
     }
   }
 
+
+
+
+
+
   function card ( type ){
 
     this.type = type;
+	this.spaceBetweenCards = 200;
     this.trogdorSprite = new Image();
-    this.trogdorSprite.src = "trogdor3.jpg";
+    this.trogdorSprite.src = "trogdor.jpg";
     this.maunuSprite = new Image();
+	// this.maunuSprite.src = "maunu.jpg";
     this.badgersSprite = new Image();
-    this.badgerSprite.src = "badgers.jpg";
+    // this.badgerSprite.src = "badger.jpg";
+	this.owner;
+	this.position;
     this.currentSprite;
     this.x;
     this.y;
     this.status;
-    this.owner;
+    //STATUS at 0 = in deck
+    //STATUS at 1 = in playing field
+    //STATUS at 2 = in dead pile
 
-    this.handler = function(){
-      if( type == 1){
 
+
+
+
+    this.typeHandler = function(){
+	console.log("typeHandler has been called");
+	if( type == 1){
         this.maunu();
       } else if (type == 2){
-
         this.trogdor();
       } else if (type == 3){
         this.badgers();
       }
     }
+	
+	this.posHandler = function(){
+	
+	
+	}
 
     this.draw = function(){
       context.drawImage( this.currentSprite, this.x, this.y, 180 , 240 );
     }
 
     this.maunu = function(){
+	console.log("maunu function has been called");
       this.currentSprite = this.maunuSprite;
+      this.status = 1;
+	  this.x = 50;
+	  this.y = 50;
+	  this.draw();
     }
 
 
@@ -153,7 +197,6 @@ function normalGameMode() {
         this.status = 0;
         this.x = 50;
         this.y = 50;
-        this.owner;
         this.draw();
 
 
@@ -166,8 +209,6 @@ function normalGameMode() {
       this.status = 0;
       this.x = 50;
       this.y = 50;
-      this.owner;
-
       this.draw();
     }
     //FOR ALL DRAW FUNCTIONS DO NOT CHANGE THE LAST TWO VALUES, THESE ARE THE ACTUAL RESOLUTIONS
@@ -199,7 +240,7 @@ function normalGameMode() {
 
     this.display = "stuff and snake things";
 
-    this.handler = function(){
+    this.typeHandler = function(){
       if( type == 1){
         //run maunu things
       } else if (type == 2){
