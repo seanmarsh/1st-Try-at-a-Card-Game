@@ -1,0 +1,134 @@
+<html>
+<head>
+</head>
+
+<body style="padding:0px;margin:0px" id="body">
+
+
+  <div id="container">
+      <canvas id="canvas0" width=800 height=600></canvas>
+      <canvas id="canvas1" width=800 height=600></canvas>
+      <canvas id="canvas2" width=800 height=600></canvas>
+      <canvas id="canvas3" width=800 height=600></canvas>
+          <div id="menu">
+              <button id="button1" type="button">Start</button>
+              <button id="button2" type="button">Options</button>
+              <button id="button3" type="button">High Scores</button>
+          </div>
+  </div>
+
+<button type="button" onclick="start()"> PRESS TO START</button>
+<button type="button" onclick="Instructions()"> PRESS TO START</button>
+
+
+
+<canvas width=650 height= 900 id="canvas" style="border:5px solid red; margin:0px; display: none">
+
+</canvas>
+
+
+<script>
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    var modeDetector = 0;
+
+    function clearBackground() {
+      context.fillStyle = "gray";
+      context.fillRect(0,0, canvas.width, canvas.height);
+    }
+
+    function startScreen() {
+      clearBackground();
+      canvas.font = "30 px arial";
+      canvas.fillText("Cards Galore!", 20, 50);
+      <button style="position: absolute; top:200px; left:20px;" onclick="Start()">Click here</button>
+</div>
+    }
+
+    function Instructions() {
+      clearBackground();
+      canvas.font = "30 px arial";
+      canvas.fillText("In this game, you use cards to attack all over the place. Go wild.", 20, 50);
+    }
+
+    function play() {
+
+    }
+
+    function endScreen() {
+      clearBackground();
+    }
+
+
+    //Other utilities functions
+
+    function card ( type ){
+
+      this.type = type;
+      this.trogdorSprite = new Image();
+      this.trogdorSprite.src = "trogdor3.jpg";
+      this.maunuSprite = new Image();
+      this.badgersSprite = new Image();
+      this.badgerSprite.src = "badgers.jpg";
+      this.currentSprite;
+      this.x;
+      this.y;
+      this.status;
+      this.owner;
+
+      this.handler = function(){
+        if( type == 1){
+
+          this.maunu();
+        } else if (type == 2){
+
+          this.trogdor();
+        } else if (type == 3){
+          this.badgers();
+        }
+      }
+
+      this.draw = function(){
+        context.drawImage( this.currentSprite, this.x, this.y, 180 , 240 );
+      }
+
+      this.maunu = function(){
+        this.currentSprite = this.maunuSprite;
+      }
+
+
+        this.trogdor = function(){
+
+          this.currentSprite = this.trogdorSprite;
+          this.status = 0;
+          this.x = 50;
+          this.y = 50;
+          this.owner;
+          this.draw();
+
+
+      }
+
+
+      this.badgers = function(){
+
+
+        this.status = 0;
+        this.x = 50;
+        this.y = 50;
+        this.owner;
+
+        this.draw();
+      }
+      //FOR ALL DRAW FUNCTIONS DO NOT CHANGE THE LAST TWO VALUES, THESE ARE THE ACTUAL RESOLUTIONS
+      //IF YOU NEED TO CHANGE IT PLEASE KEEP THE RATIO OF 6(X) by 8(Y)
+
+    }
+
+
+
+
+
+</script>
+</body>
+</html>
